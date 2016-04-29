@@ -318,6 +318,7 @@ public function log_payment_info($auth_code,$card_type,$last4,$bank,$user_id,$fi
     public function createTransaction($data){
       //insert data into transaction_log database table
       //disabled for test until database is created
+      //enable it after you have created the database
       //$this->db->insert('trabsaction_log',$data);
       return;
        
