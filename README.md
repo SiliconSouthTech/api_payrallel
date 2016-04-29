@@ -1,7 +1,6 @@
-# CodeIgniter Rest Server
+# Payrallel Pay APi
 
-A fully RESTful server implementation for CodeIgniter using one library, one
-config file and one controller.
+Api for the payrallel app.
 
 ## Requirements
 
@@ -183,16 +182,4 @@ By default, the HTTP will be `X-API-KEY`. This can be configured in **config/res
 $ curl -X POST -H "X-API-KEY: some_key_here" http://example.com/books
 ```
 
-## Other Documentation / Tutorials
 
-* [NetTuts: Working with RESTful Services in CodeIgniter](http://net.tutsplus.com/tutorials/php/working-with-restful-services-in-codeigniter-2/)
-
-## Contributions
-
-This project was originally written by Phil Sturgeon, however his involvement has shifted
-as he is no longer using it.  As of 2013/11/20 further developement and support will be done by Chris Kacerguis.
-
-Pull Requests are the best way to fix bugs or add features. I know loads of you use this, so please
-contribute if you have improvements to be made and I'll keep releasing versions over time.
-
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/chriskacerguis/codeigniter-restserver/master/LICENSE)
