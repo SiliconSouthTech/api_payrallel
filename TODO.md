@@ -23,5 +23,3 @@ Create of new cause.
 | Viewing Cause Profile
 | Editing Cause Profile
 _________________________________________ 
-
-
