@@ -10,6 +10,7 @@ class Api_v1 extends REST_Controller
     {
         parent::__construct('rest');
         $header = $this->input->request_headers();
+        
         $this->load->model('redis_model');
         if(isset($header['Token'])) {
             $this->user_id = $this->redis_model->getToken($this->config->item('auth_pre').$header['Token']);
@@ -17,9 +18,17 @@ class Api_v1 extends REST_Controller
         
     }
 
-    //检查用户是否存在，true 表示存在
+    
+    // Check if the user exists, true indicates that
     function login_id_get()
     {
+        if (empty($header)) {
+            $this->response([
+                    'status' => FALSE,
+                    'error_code' => 1001,
+                    'message' => 'No header found'
+                ], REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
+        }
         $this->load->model('user_model'); 
         $app_id=$this->get('app_id');
         $login_id=$this->get('login_id');
@@ -54,7 +63,7 @@ class Api_v1 extends REST_Controller
         }
     }
 
-    //用户注册
+    // User Registration
     function user_post()
     {
         $this->load->model('user_model');
@@ -113,7 +122,7 @@ class Api_v1 extends REST_Controller
 
     }
 
-    //获取用户信息 需要登录才能获取用户信息，否则返回403
+    // Get user information Login required to obtain user information, otherwise 403
     function user_get()
     {
         $user_id =$this->user_id;
@@ -133,7 +142,7 @@ class Api_v1 extends REST_Controller
         }
     }
 
-    //修改用户信息
+    // Modify user information
     function user_put()
     {
         $user_id = $this->user_id;
@@ -158,7 +167,7 @@ class Api_v1 extends REST_Controller
         }
     }
 
-    //修改密码
+    //change Password
     function  passwd_put(){
         $user       = $this->getUserById($this->user_id);
         $passwd     = $this->put('login_pwd');
@@ -188,7 +197,7 @@ class Api_v1 extends REST_Controller
         }
     }
 
-    //找回密码
+    // Retrieve Password
     function  passwd_post(){
 
         $passwd   = $this->post('login_pwd');
@@ -214,7 +223,7 @@ class Api_v1 extends REST_Controller
         }
     }
 
-    //登录操作,返回user_id
+    // Login operation returns user_id
     function token_post(){
         $this->load->model('user_model');
         $this->load->model('redis_model');
@@ -247,7 +256,7 @@ class Api_v1 extends REST_Controller
         }
     }
 
-    //用户退出，删除token
+    // User exits, delete token
     function token_delete(){
         $this->load->model('redis_model');
         $header = $this->input->request_headers();
@@ -259,7 +268,7 @@ class Api_v1 extends REST_Controller
         }
     }
 
-    //上传用户头像
+    // Upload Users Avatar
     function file_post(){
         $user = $this->getUserById($this->user_id);
         if(empty($user)){
@@ -311,7 +320,7 @@ class Api_v1 extends REST_Controller
         }
     }
 
-    //上传日志
+    // Upload log
     function log_post(){
         $user = $this->getUserByToken($this->user_id);
         $path  = $this->post('path');
@@ -347,7 +356,7 @@ class Api_v1 extends REST_Controller
         }
     }
 
-    //检查设备是否存在，true 表示存在，可以注册
+    // Check whether the device exists, true, it indicates that, you can register
     function device_get()
     {
         $user_id   = $this->user_id;
@@ -384,7 +393,7 @@ class Api_v1 extends REST_Controller
         }
     }
 
-    //检查sn是否存在
+   // Check if there sn
     public function deviceSn_get(){
         $this->load->model('device_model');
         $app_id = $this->uri->segment('4');
@@ -438,7 +447,7 @@ class Api_v1 extends REST_Controller
         }
     }
 
-    //获取设备列表
+    // Get the list of devices
     function devices_get(){
         $user_id = $this->user_id;
         if(empty($user_id)){
@@ -455,7 +464,7 @@ class Api_v1 extends REST_Controller
     }
 
 
-    //修改设备
+    // Modify the device
     function device_put()
     {
         $user_id    = $this->user_id;
@@ -702,16 +711,16 @@ class Api_v1 extends REST_Controller
         if(empty($province) || empty($city) ){
             $this->response(array('message'=>400),200);
         }
-        $array = array('省','市','特别行政区','自治区','区','县',);
-        //根据城市查询pm
+        $array = array('Province', 'city', 'Special Administrative Region', 'autonomous', 'region', 'county');
+        // Query pm according to the city
         $area = $this->api_model->chaxun_air_log('round(avg(pm25)) as pm,round(avg(aqi)) as aqi',"area_name = '$city'");
-        //上边没有查出来时，对城市名称处理后进行查询
+        // The above does not check out, the name of the city after processing the query
         if(!empty($area)){
             $str=str_replace($array,'',$city);
             $area_del = $this->api_model->chaxun_air_log('round(avg(pm25)) as pm,round(avg(aqi)) as aqi',"area_name like '$str'");
         }
 
-        //根据省市区查询area_id
+        // According provinces query areaid
         $strprovince=str_replace($array,'',$province);
         $strcity=str_replace($array,'',$city);
         $strdistrict=str_replace($array,'',$district);
@@ -727,7 +736,7 @@ class Api_v1 extends REST_Controller
             $area_id = $this->api_model->chaxun_log_sk('temperature,wind_direct,wind_power,humidity',"area_id = '$id'");
         }
 
-        //将查出的结果放入数组中
+        // Will result into an array of isolated
         if(!empty($area_id)){
             $data = array(
                 'temperature' =>$area_id[0]['temperature'],
@@ -742,7 +751,7 @@ class Api_v1 extends REST_Controller
                     $this->api_model->charu(array('area_name'=>$district,'district_name'=>$city,'province_name'=>$province));
                 }
             }
-            //天气信息查询失败  统一返回查询失败
+            // Weather unified information query failed to return the query fails
             $this->response(array('message' => 404), 200);
         }
 
@@ -753,11 +762,11 @@ class Api_v1 extends REST_Controller
             $data['pm'] = $area[0]['pm'];
             $data['aqi'] = $area[0]['aqi'];
         }else{
-            //pm信息查询失败  统一返回查询失败
+            // Pm unified information query fails to return the query fails
             $this->response(array('message' => 404), 200);
         }
 
-        //返回值
+        //return value
         if($data){
             $this->response(array('result'=>$data,'message' => 200), 200);
         }else{

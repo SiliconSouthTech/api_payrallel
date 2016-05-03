@@ -1,8 +1,8 @@
 <?php
 
 /**
- * url 为服务的url地址
- * query 为请求串
+ * url For the url address of the service
+ * query The request string
  */
 function sock_post($url,$query){
     $data = "";
@@ -30,11 +30,11 @@ function sock_post($url,$query){
 }
 
 /**
- * 模板接口发短信
- * apikey 为云片分配的apikey
- * tpl_id 为模板id
- * tpl_value 为模板值
- * mobile 为接受短信的手机号
+ * Template interface texting
+ * apikey cloud sheet assigned apikey
+ * tpl_id template id
+ * tpl_value Template value
+ * mobile Phone number to receive text messages
  */
 function tpl_send_sms($apikey, $tpl_id, $tpl_value, $mobile){
     $url="http://yunpian.com/v1/sms/tpl_send.json";

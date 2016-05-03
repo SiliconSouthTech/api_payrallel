@@ -12,7 +12,7 @@ function is_mobile($mobilePhone) {
     }
 }
 
-//将数据库中查询出来的结果集进行过滤，如果发现结果集中有空value，过滤掉
+// Database query result set is filtered out, and found that if you focus on free value, filter out
 function resultFilter($array){
     $list = array();
     foreach($array as $row){

@@ -138,3 +138,16 @@ $autoload['language'] = array();
 */
 
 $autoload['model'] = array();
+
+/*
+| -------------------------------------------------------------------
+| Loading the Predis Libary 
+| -------------------------------------------------------------------
+| Am hardcoding it into the auto loader since it would be used at almost every instance of the api call
+|
+*/
+require APPPATH.'/libraries/predis/Autoload.php';
+
+//Firing up the libary
+Predis\Autoloader::register();
+

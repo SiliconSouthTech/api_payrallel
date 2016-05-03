@@ -10,7 +10,7 @@ class WxApi extends REST_Controller
         parent::__construct();
     }
 
-    //检查设备是否存在，true 表示存在
+   // Check whether the device exists, true indicates that
     function device_get()
     {
         $type    = $this->uri->segment('3');
@@ -53,7 +53,7 @@ class WxApi extends REST_Controller
         }
     }
 
-    //修改设备
+    // Modify the device
     function device_post()
     {
         $device_sn = $this->uri->segment('3');

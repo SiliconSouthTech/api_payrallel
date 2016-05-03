@@ -10,22 +10,22 @@ $appkey = '504f4582c69e';
 //) );
 
 /**
- * 发起一个post请求到指定接口
+ * Initiate a post request to the specified interface
  *
- * @param string $api 请求的接口
- * @param array $params post参数
- * @param int $timeout 超时时间
- * @return string 请求结果
+ * @param string $api Interface request
+ * @param array $params post parameters
+ * @param int $timeout overtime time
+ * @return string Request Results
  */
 function postRequest( $api, array $params = array(), $timeout = 30 ) {
     $ch = curl_init();
     curl_setopt( $ch, CURLOPT_URL, $api );
-    // 以返回的形式接收信息
+    // To return the information received in the form of
     curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-    // 设置为POST方式
+    // Mode is set to POST
     curl_setopt( $ch, CURLOPT_POST, 1 );
     curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $params ) );
-    // 不验证https证书
+    // Https certificate does not validate
     curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
     curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 0 );
     curl_setopt( $ch, CURLOPT_TIMEOUT, $timeout );
@@ -33,9 +33,9 @@ function postRequest( $api, array $params = array(), $timeout = 30 ) {
         'Content-Type: application/x-www-form-urlencoded;charset=UTF-8',
         'Accept: application/json',
     ) );
-    // 发送数据
+    // send data
     $response = curl_exec( $ch );
-    // 不要忘记释放资源
+    // Do not forget to release resources
     curl_close( $ch );
     return $response;
 }

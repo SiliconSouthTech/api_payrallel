@@ -32,7 +32,7 @@ function encrypt($txt, $key = 'anihc ctI')
 }
 
 /*
- * 解密
+ * Decryption
  *
  */
 function decrypt($txt, $key = 'anihc ctI')
